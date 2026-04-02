@@ -14,7 +14,133 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      designers: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          id: string
+          is_active: boolean
+          name: string
+          specialty: Database["public"]["Enums"]["designer_specialty"][]
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          is_active?: boolean
+          name: string
+          specialty?: Database["public"]["Enums"]["designer_specialty"][]
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          specialty?: Database["public"]["Enums"]["designer_specialty"][]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      request_history: {
+        Row: {
+          action: string
+          created_at: string
+          description: string | null
+          id: string
+          performed_by: string | null
+          request_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          performed_by?: string | null
+          request_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          performed_by?: string | null
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_history_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      requests: {
+        Row: {
+          ai_category: Database["public"]["Enums"]["designer_specialty"] | null
+          ai_reasoning: string | null
+          assigned_designer_id: string | null
+          attachment_urls: string[] | null
+          brand_name: string
+          brief: string
+          client_name: string
+          created_at: string
+          delivery_note: string | null
+          delivery_urls: string[] | null
+          id: string
+          requested_deadline: string | null
+          status: Database["public"]["Enums"]["request_status"]
+          updated_at: string
+        }
+        Insert: {
+          ai_category?: Database["public"]["Enums"]["designer_specialty"] | null
+          ai_reasoning?: string | null
+          assigned_designer_id?: string | null
+          attachment_urls?: string[] | null
+          brand_name: string
+          brief: string
+          client_name: string
+          created_at?: string
+          delivery_note?: string | null
+          delivery_urls?: string[] | null
+          id?: string
+          requested_deadline?: string | null
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+        }
+        Update: {
+          ai_category?: Database["public"]["Enums"]["designer_specialty"] | null
+          ai_reasoning?: string | null
+          assigned_designer_id?: string | null
+          attachment_urls?: string[] | null
+          brand_name?: string
+          brief?: string
+          client_name?: string
+          created_at?: string
+          delivery_note?: string | null
+          delivery_urls?: string[] | null
+          id?: string
+          requested_deadline?: string | null
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "requests_assigned_designer_id_fkey"
+            columns: ["assigned_designer_id"]
+            isOneToOne: false
+            referencedRelation: "designers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +149,21 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      designer_specialty:
+        | "graphic_design"
+        | "web_design"
+        | "packaging"
+        | "social_media"
+        | "branding"
+        | "motion"
+        | "illustration"
+        | "other"
+      request_status:
+        | "pending"
+        | "assigned"
+        | "in_progress"
+        | "completed"
+        | "delivered"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +290,24 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      designer_specialty: [
+        "graphic_design",
+        "web_design",
+        "packaging",
+        "social_media",
+        "branding",
+        "motion",
+        "illustration",
+        "other",
+      ],
+      request_status: [
+        "pending",
+        "assigned",
+        "in_progress",
+        "completed",
+        "delivered",
+      ],
+    },
   },
 } as const
